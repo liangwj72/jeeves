@@ -95,8 +95,6 @@ class WechatHttpServiceInternal {
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private String originValue = null;
     private String refererValue = null;
-    private String BROWSER_DEFAULT_ACCEPT_LANGUAGE = "en,zh-CN;q=0.8,zh;q=0.6,ja;q=0.4,zh-TW;q=0.2";
-    private String BROWSER_DEFAULT_ACCEPT_ENCODING = "gzip, deflate, br";
 
     @Autowired
     WechatHttpServiceInternal(RestTemplate restTemplate, @Value("${wechat.ua}") String BROWSER_DEFAULT_USER_AGENT) {
@@ -105,14 +103,11 @@ class WechatHttpServiceInternal {
         postHeader.set(HttpHeaders.USER_AGENT, BROWSER_DEFAULT_USER_AGENT);
         postHeader.set(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
         postHeader.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.ALL));
-        postHeader.set(HttpHeaders.ACCEPT_LANGUAGE, BROWSER_DEFAULT_ACCEPT_LANGUAGE);
-        postHeader.set(HttpHeaders.ACCEPT_ENCODING, BROWSER_DEFAULT_ACCEPT_ENCODING);
+        
         this.getHeader = new HttpHeaders();
-        getHeader.set(HttpHeaders.USER_AGENT, BROWSER_DEFAULT_USER_AGENT);
-        getHeader.set(HttpHeaders.ACCEPT_LANGUAGE, BROWSER_DEFAULT_ACCEPT_LANGUAGE);
-        getHeader.set(HttpHeaders.ACCEPT_ENCODING, BROWSER_DEFAULT_ACCEPT_ENCODING);
     }
 
+    
     void logout(String hostUrl, String skey) throws IOException {
         final String url = String.format(WECHAT_URL_LOGOUT, hostUrl, escape(skey));
         restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(postHeader), Object.class);
