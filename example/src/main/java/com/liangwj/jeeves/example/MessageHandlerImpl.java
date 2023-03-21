@@ -1,11 +1,9 @@
 package com.liangwj.jeeves.example;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.liangwj.jeeves.wechat.domain.shared.*;
-import com.liangwj.jeeves.wechat.service.MessageHandler;
-import com.liangwj.jeeves.wechat.service.WechatHttpService;
-import com.liangwj.jeeves.wechat.utils.MessageUtils;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
@@ -13,11 +11,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.liangwj.jeeves.wechat.domain.shared.ChatRoomMember;
+import com.liangwj.jeeves.wechat.domain.shared.Contact;
+import com.liangwj.jeeves.wechat.domain.shared.FriendInvitationContent;
+import com.liangwj.jeeves.wechat.domain.shared.Message;
+import com.liangwj.jeeves.wechat.domain.shared.RecommendInfo;
+import com.liangwj.jeeves.wechat.service.MessageHandler;
+import com.liangwj.jeeves.wechat.service.WechatHttpService;
+import com.liangwj.jeeves.wechat.utils.MessageUtils;
 
 @Component
 public class MessageHandlerImpl implements MessageHandler {

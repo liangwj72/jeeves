@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<!-- 主项目信息，主要用于设置了库的版本号，这样下面写依赖时就可以不用写版本了 -->
@@ -22,12 +22,12 @@
 		<!-- 自己的工具包 -->
 		<dependency>
 			<groupId>com.liangwj</groupId>
-	<artifactId>jeeves-wechat-bot</artifactId>
-	<version>0.2.0</version>
+			<artifactId>jeeves-wechat-bot</artifactId>
+			<version>0.2.0</version>
 		</dependency>
 		<!-- /自己的工具包 -->
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -83,5 +83,5 @@
 
 		</plugins>
 	</build>
-	
+
 </project>
