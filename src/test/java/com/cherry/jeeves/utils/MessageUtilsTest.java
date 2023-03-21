@@ -3,6 +3,8 @@ package com.cherry.jeeves.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.liangwj.jeeves.utils.MessageUtils;
+
 public class MessageUtilsTest {
     @Test
     public void getChatRoomMessageContent() throws Exception {

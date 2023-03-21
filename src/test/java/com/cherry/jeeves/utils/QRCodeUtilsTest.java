@@ -2,6 +2,8 @@ package com.cherry.jeeves.utils;
 
 import org.junit.Test;
 
+import com.liangwj.jeeves.utils.QRCodeUtils;
+
 public class QRCodeUtilsTest {
 
     @Test

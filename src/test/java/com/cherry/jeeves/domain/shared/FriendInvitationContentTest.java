@@ -2,6 +2,8 @@ package com.cherry.jeeves.domain.shared;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.liangwj.jeeves.domain.shared.FriendInvitationContent;
+
 import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Assert;
 import org.junit.Test;

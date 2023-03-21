@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
+import com.liangwj.jeeves.utils.HeaderUtils;
+
 public class HeaderUtilsTest {
 
 
@@ -16,7 +18,7 @@ public class HeaderUtilsTest {
     @Test
     public void mergeOne() throws Exception {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         HttpHeaders result = HeaderUtils.merge(headers);
         Assert.assertEquals(headers.getContentType(), result.getContentType());
     }
@@ -24,7 +26,7 @@ public class HeaderUtilsTest {
     @Test
     public void mergeTwoWithDifferentNames() throws Exception {
         HttpHeaders header1 = new HttpHeaders();
-        header1.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        header1.setContentType(MediaType.APPLICATION_JSON);
         HttpHeaders header2 = new HttpHeaders();
         header2.setAccessControlMaxAge(100);
         HttpHeaders result = HeaderUtils.merge(header1, header2);
@@ -35,7 +37,7 @@ public class HeaderUtilsTest {
     @Test
     public void mergeTwoWithSameNames() throws Exception {
         HttpHeaders header1 = new HttpHeaders();
-        header1.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        header1.setContentType(MediaType.APPLICATION_JSON);
         HttpHeaders header2 = new HttpHeaders();
         header2.setContentType(MediaType.APPLICATION_XML);
         HttpHeaders result = HeaderUtils.merge(header1, header2);

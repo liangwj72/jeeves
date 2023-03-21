@@ -3,6 +3,8 @@ package com.cherry.jeeves.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.liangwj.jeeves.utils.RandomUtils;
+
 public class RandomUtilsTest {
     @Test
     public void generateDateWithBitwiseNot1() throws Exception {
