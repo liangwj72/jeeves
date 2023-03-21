@@ -1432,3 +1432,9 @@ Caused by: com.liangwj.jeeves.wechat.exception.WechatException: uuid can't be fo
 [RMI TCP Connection(2)-127.0.0.1] INFO  17:47:02 o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin:159 - Application shutdown requested. 
 [RMI TCP Connection(2)-127.0.0.1] INFO  17:47:03 o.a.j.l.DirectJDKLog:173 - Stopping service [Tomcat] 
 [RMI TCP Connection(2)-127.0.0.1] WARN  17:47:03 c.l.j.w.s.CleanupService:21 - [*] system is being destroyed 
+[main] DEBUG 17:47:13 o.s.c.l.CompositeLog:127 - Response 200 OK 
+[main] DEBUG 17:47:13 o.s.c.l.CompositeLog:127 - Reading to [java.lang.String] as "text/javascript" 
+[main] INFO  17:47:13 c.l.j.w.s.LoginService:93 - [*] login status = AWAIT_SCANNING 
+[main] DEBUG 17:47:13 o.s.c.l.CompositeLog:127 - HTTP GET https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid=gY43RvzhXA%3D%3D&tip=0&r=-59820407&_=1679392033142 
+[main] DEBUG 17:47:13 o.s.c.l.CompositeLog:127 - Accept=[text/plain, application/xml, text/xml, application/json, application/*+xml, application/*+json, text/html, */*] 
+[main] INFO  17:47:13 c.l.j.w.u.r.HttpRestConfig$1:64 - 请求:GET https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid=gY43RvzhXA%3D%3D&tip=0&r=-59820407&_=1679392033142 

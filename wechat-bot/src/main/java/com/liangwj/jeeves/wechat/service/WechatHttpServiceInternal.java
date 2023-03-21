@@ -210,16 +210,16 @@ class WechatHttpServiceInternal {
 		ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(customHeader),
 				String.class);
 		String body = responseEntity.getBody();
+		log.debug("请求UUID结果: {}", body); // 请求UUID结果: window.QRLogin.code = 200; window.QRLogin.uuid = "AaQzMucO3A==";
+
 		Matcher matcher = Pattern.compile(regEx).matcher(body);
 		if (matcher.find()) {
 			if (successCode.equals(matcher.group(1))) {
 				return matcher.group(2);
 			}
 		}
-		
-		log.debug("请求UUID结果: {}", body);
-		
-		throw new WechatException("uuid can't be found");
+				
+		throw new WechatException("請求UUID時，無法獲取 uuid。原始文本:" + body);
 	}
 
 	/**

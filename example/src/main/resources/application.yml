@@ -46,15 +46,15 @@ logging:
     # 我们一般打开框架的info日志，方便检查
     # com.cherry.jeeves: info
     # ActionInfo开了debug日志后，可以看到每个请求的参数和响应时间
-    "[com.liangwj.jeeves]": ${APP_LOG_LEVEL:debug}
+    #"[com.liangwj.jeeves]": ${APP_LOG_LEVEL:debug}
     # 本项目的代码默认是debug
-    demo: ${APP_LOG_LEVEL:debug}
+    "[com.liangwj.jeeves]": ${APP_LOG_LEVEL:debug}
     
   # 在console中显示时，我们为字体加了颜色，方便查看，但输出到文件时，加颜色就没有必要了
   pattern: 
     console: "[%thread] %-5level %d{HH:mm:ss} %class{16}:%line - %msg %n"
     file: "[%thread] %-5level %d{HH:mm:ss} %class{16}:%line - %msg %n"
-  file.name: ./work/logs.txt
+  file.name: target/logs.txt
      
 wechat:
   ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"
