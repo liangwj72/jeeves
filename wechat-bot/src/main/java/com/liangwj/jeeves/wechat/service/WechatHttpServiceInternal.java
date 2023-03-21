@@ -1,6 +1,7 @@
 package com.liangwj.jeeves.wechat.service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -137,6 +138,9 @@ class WechatHttpServiceInternal {
 	private String refererValue = null;
 
 	@Autowired
+	private UrlServices urlServices;
+	
+	@Autowired
 	WechatHttpServiceInternal(RestTemplate restTemplate, @Value("${wechat.ua}") String BROWSER_DEFAULT_USER_AGENT) {
 		this.restTemplate = restTemplate;
 		this.postHeader = new HttpHeaders();
@@ -191,17 +195,19 @@ class WechatHttpServiceInternal {
 	 * Get UUID for this session
 	 *
 	 * @return UUID
+	 * @throws URISyntaxException 
+	 * @throws MalformedURLException 
 	 */
-	String getUUID() {
+	String getUUID() throws URISyntaxException, MalformedURLException {
 		final String regEx = "window.QRLogin.code = (\\d+); window.QRLogin.uuid = \"(\\S+?)\";";
-		final String url = String.format(WECHAT_URL_UUID, System.currentTimeMillis());
+		final URI uri = this.urlServices.getUuIdUrl();
 		final String successCode = "200";
 		HttpHeaders customHeader = new HttpHeaders();
 		customHeader.setPragma("no-cache");
 		customHeader.setCacheControl("no-cache");
 		customHeader.setAccept(Arrays.asList(MediaType.ALL));
 		HeaderUtils.assign(customHeader, getHeader);
-		ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(customHeader),
+		ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(customHeader),
 				String.class);
 		String body = responseEntity.getBody();
 		Matcher matcher = Pattern.compile(regEx).matcher(body);
@@ -210,6 +216,9 @@ class WechatHttpServiceInternal {
 				return matcher.group(2);
 			}
 		}
+		
+		log.debug("请求UUID结果: {}", body);
+		
 		throw new WechatException("uuid can't be found");
 	}
 

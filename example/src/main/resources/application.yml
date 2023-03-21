@@ -46,7 +46,7 @@ logging:
     # 我们一般打开框架的info日志，方便检查
     # com.cherry.jeeves: info
     # ActionInfo开了debug日志后，可以看到每个请求的参数和响应时间
-    "[com.cherry.jeeves]": ${APP_LOG_LEVEL:debug}
+    "[com.liangwj.jeeves]": ${APP_LOG_LEVEL:debug}
     # 本项目的代码默认是debug
     demo: ${APP_LOG_LEVEL:debug}
     
