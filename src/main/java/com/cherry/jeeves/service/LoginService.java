@@ -1,7 +1,22 @@
 package com.cherry.jeeves.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.cherry.jeeves.domain.request.component.BaseRequest;
-import com.cherry.jeeves.domain.response.*;
+import com.cherry.jeeves.domain.response.BatchGetContactResponse;
+import com.cherry.jeeves.domain.response.GetContactResponse;
+import com.cherry.jeeves.domain.response.InitResponse;
+import com.cherry.jeeves.domain.response.LoginResult;
+import com.cherry.jeeves.domain.response.StatusNotifyResponse;
 import com.cherry.jeeves.domain.shared.ChatRoomDescription;
 import com.cherry.jeeves.domain.shared.Token;
 import com.cherry.jeeves.enums.LoginCode;
@@ -12,16 +27,6 @@ import com.cherry.jeeves.utils.QRCodeUtils;
 import com.cherry.jeeves.utils.WechatUtils;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.WriterException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.stream.Collectors;
 
 @Component
 public class LoginService {
