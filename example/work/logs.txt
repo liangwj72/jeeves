@@ -1,0 +1,37 @@
+[main] INFO  15:52:54 o.s.b.StartupInfoLogger:55 - Starting JeevesApplication using Java 11.0.16 on liangwj-out81 with PID 9728 (C:\MyDocs\coding\jeeves-github\example\target\classes started by liangwj in C:\MyDocs\coding\jeeves-github\example) 
+[main] INFO  15:52:54 o.s.b.SpringApplication:631 - No active profile set, falling back to 1 default profile: "default" 
+[main] INFO  15:52:56 o.s.b.w.e.t.TomcatWebServer:108 - Tomcat initialized with port(s): 22000 (http) 
+[main] INFO  15:52:56 o.a.j.l.DirectJDKLog:173 - Starting service [Tomcat] 
+[main] INFO  15:52:56 o.a.j.l.DirectJDKLog:173 - Starting Servlet engine: [Apache Tomcat/9.0.71] 
+[main] INFO  15:52:56 o.a.j.l.DirectJDKLog:173 - Initializing Spring embedded WebApplicationContext 
+[main] INFO  15:52:56 o.s.b.w.s.c.ServletWebServerApplicationContext:292 - Root WebApplicationContext: initialization completed in 1713 ms 
+[main] INFO  15:52:57 o.s.b.w.e.t.TomcatWebServer:220 - Tomcat started on port(s): 22000 (http) with context path '' 
+[main] INFO  15:52:57 o.s.b.StartupInfoLogger:61 - Started JeevesApplication in 3.549 seconds (JVM running for 4.877) 
+[main] INFO  15:52:57 c.l.j.w.JeevesWechatBotServices:20 - Jeeves starts 
+[main] INFO  15:52:57 c.l.j.w.u.r.HttpRestConfig$1:64 - 请求:GET https://wx.qq.com/?target=t 
+[main] INFO  15:52:58 c.l.j.w.s.LoginService:54 - [0] entry completed 
+[main] INFO  15:52:58 o.s.b.a.l.ConditionEvaluationReportLoggingListener:136 - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled. 
+[main] ERROR 15:52:58 o.s.b.SpringApplication:821 - Application run failed 
+java.lang.IllegalStateException: Failed to execute CommandLineRunner
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:771)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:314)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.liangwj.jeeves.example.JeevesApplication.main(JeevesApplication.java:20)
+Caused by: java.util.UnknownFormatConversionException: Conversion = 'F'
+	at java.base/java.util.Formatter$FormatSpecifier.conversion(Formatter.java:2839)
+	at java.base/java.util.Formatter$FormatSpecifier.<init>(Formatter.java:2865)
+	at java.base/java.util.Formatter.parse(Formatter.java:2713)
+	at java.base/java.util.Formatter.format(Formatter.java:2655)
+	at java.base/java.util.Formatter.format(Formatter.java:2609)
+	at java.base/java.lang.String.format(String.java:2897)
+	at com.liangwj.jeeves.wechat.service.WechatHttpServiceInternal.getUUID(WechatHttpServiceInternal.java:197)
+	at com.liangwj.jeeves.wechat.service.LoginService.login(LoginService.java:56)
+	at com.liangwj.jeeves.wechat.JeevesWechatBotServices.start(JeevesWechatBotServices.java:22)
+	at com.liangwj.jeeves.example.JeevesApplication.lambda$1(JeevesApplication.java:29)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:768)
+	... 5 common frames omitted
+[main] WARN  15:52:58 c.l.j.w.s.CleanupService:21 - [*] system is being destroyed 

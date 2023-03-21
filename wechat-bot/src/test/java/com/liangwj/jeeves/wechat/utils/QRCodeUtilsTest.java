@@ -1,0 +1,14 @@
+package com.liangwj.jeeves.wechat.utils;
+
+import org.junit.Test;
+
+import com.liangwj.jeeves.wechat.utils.QRCodeUtils;
+
+public class QRCodeUtilsTest {
+
+    @Test
+    public void generateQR() throws Exception {
+        final String url = "https://github.com/";
+        QRCodeUtils.generateQR(url, 5, 5);
+    }
+}

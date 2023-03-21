@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- 主项目信息，主要用于设置了库的版本号，这样下面写依赖时就可以不用写版本了 -->
+	<parent>
+		<groupId>com.liangwj</groupId>
+		<artifactId>tools2k-pom</artifactId>
+		<version>1.0.1</version>
+	</parent>
+	<!-- /主项目信息 -->
+
+	<artifactId>jeeves-wechat-bot</artifactId>
+	<version>0.2.0</version>
+	<packaging>jar</packaging>
+
+	<name>jeeves</name>
+	<description></description>
+
+	<dependencies>
+		<!-- 自己的工具包 -->
+		<dependency>
+			<groupId>com.liangwj</groupId>
+			<artifactId>tools2k-api-server</artifactId>
+		</dependency>
+		<!-- /自己的工具包 -->
+
+		<!-- Spring boot 的批量依赖 -->
+		<dependency>
+			<!-- 测试框架 -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+			<scope>test</scope>
+      </dependency>
+      
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.1</version>
+		</dependency>
+	</dependencies>
+
+	
+	<!-- 使用nnland仓库 -->
+	<repositories>
+		<repository>
+			<id>nnland</id>
+			<name>nnland Maven 仓库</name>
+			<url>https://mirrors.nnland.cn/repository/maven-public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nnland</id>
+			<name>nnland Maven 仓库</name>
+			<url>https://mirrors.nnland.cn/repository/maven-public</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+	
+	
+	<build>
+		<plugins>
+			<plugin>
+				<!-- 打jar包的配置 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+
+				<configuration>
+					<!-- 配置文件，静态文件 这类三类文件需要排除在外，但模板打包在内 -->
+					<excludes>
+						<exclude>/static/**.*</exclude>
+					</excludes>
+
+					<archive>
+						<manifest>
+							<!-- 在manifest中设置Class-Path，并将所有的第三方依赖包的路径放里面 -->
+							<addClasspath>true</addClasspath>
+
+							<!-- 生成的manifest中classpath的前缀，因为要把第三方jar放到lib目录下，所以classpath的前缀是lib/ -->
+							<classpathPrefix>lib/</classpathPrefix>
+
+							<!-- 启动程序 -->
+							<mainClass>com.liangwj.chatbot.StartServer</mainClass>
+
+							<!-- 解决SNAPSHOT jar包问题，如果没有这句，会有ClassNotFound的错误 -->
+							<useUniqueVersions>false</useUniqueVersions>
+						</manifest>
+
+						<!-- 我们需要在class-path额外的增加两个目录。conf：配置文件目录，ftl：模板文件目录 -->
+						<!-- <manifestEntries> <Class-Path>ftl/</Class-Path> </manifestEntries> -->
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<!-- 用于拷贝依赖库的插件 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<!-- 我们将依赖库拷贝到target/lib这个目录下 -->
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+	
+</project>
