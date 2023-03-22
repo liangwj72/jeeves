@@ -3,8 +3,6 @@ package com.liangwj.jeeves.wechat.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.liangwj.jeeves.wechat.utils.MessageUtils;
-
 public class MessageUtilsTest {
     @Test
     public void getChatRoomMessageContent() throws Exception {

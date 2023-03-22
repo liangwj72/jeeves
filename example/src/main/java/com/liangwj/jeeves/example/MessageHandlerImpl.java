@@ -21,7 +21,6 @@ import com.liangwj.jeeves.wechat.domain.shared.RecommendInfo;
 import com.liangwj.jeeves.wechat.enums.BotStatus;
 import com.liangwj.jeeves.wechat.service.MessageHandler;
 import com.liangwj.jeeves.wechat.service.WechatHttpService;
-import com.liangwj.jeeves.wechat.utils.DebugUtils;
 import com.liangwj.jeeves.wechat.utils.MessageUtils;
 
 @Component
@@ -160,7 +159,7 @@ public class MessageHandlerImpl implements MessageHandler {
 		// 将二维码保存在内存
 		this.qrCodeBytes = bytes;
 
-		DebugUtils.saveQrCodeToFile(bytes);
+		// DebugUtils.saveQrCodeToFile(bytes);
 	}
 
 	@Override

@@ -26,6 +26,11 @@
 			<version>0.2.0</version>
 		</dependency>
 		<!-- /自己的工具包 -->
+
+ 	    <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>		
 	</dependencies>
 
 	<build>

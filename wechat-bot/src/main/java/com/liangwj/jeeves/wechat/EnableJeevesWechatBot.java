@@ -9,11 +9,14 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import com.liangwj.jeeves.wechat.service.LoginService;
+
 /**
  * 自动配置微信机器人
  *
  * @author rock
  *
+ * @see LoginService#connect() 启动方法
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

@@ -5,24 +5,25 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.http.client.utils.URIBuilder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.liangwj.jeeves.wechat.enums.UUIDParaEnum;
 
-@Component
-public class UrlServices {
+@Service
+public class ConfigServices {
 
-	public static final String LOGIN_URL="https://login.weixin.qq.com"; // 基本的URL
-	public static final String UUID_URL= LOGIN_URL + "/jslogin"; // 获取uuid
-//	public static final String 
-//	public static final String 
-//	public static final String 
-	
+	public static final String LOGIN_URL = "https://login.weixin.qq.com"; // 基本的URL
+	public static final String UUID_URL = LOGIN_URL + "/jslogin"; // 获取uuid
+	// public static final String
+	// public static final String
+	// public static final String
+
 	/**
 	 * 构造获取uuid的url
+	 * 
 	 * @return
 	 * @throws URISyntaxException
-	 * @throws MalformedURLException 
+	 * @throws MalformedURLException
 	 */
 	public URI getUuIdUrl() throws URISyntaxException, MalformedURLException {
 		URIBuilder builder = new URIBuilder(UUID_URL);
@@ -33,5 +34,5 @@ public class UrlServices {
 		builder.addParameter(UUIDParaEnum.LANG.para(), UUIDParaEnum.LANG.value());
 		return builder.build().toURL().toURI();
 	}
-	
+
 }

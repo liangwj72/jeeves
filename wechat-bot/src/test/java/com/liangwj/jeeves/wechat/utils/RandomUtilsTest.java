@@ -3,8 +3,6 @@ package com.liangwj.jeeves.wechat.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.liangwj.jeeves.wechat.utils.RandomUtils;
-
 public class RandomUtilsTest {
     @Test
     public void generateDateWithBitwiseNot1() throws Exception {

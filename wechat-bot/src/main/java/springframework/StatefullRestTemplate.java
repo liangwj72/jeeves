@@ -1,4 +1,8 @@
-package com.liangwj.jeeves.wechat.utils.rest;
+package springframework;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -11,17 +15,16 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * RestTemplate with state. Inspired by https://stackoverflow.com/a/12840202/2364882
+ * 有状态的 RestTemplate，独立一个包的目的是不想记录太多日志
+ * 
+ * RestTemplate with state. Inspired by
+ * https://stackoverflow.com/a/12840202/2364882
  */
 public class StatefullRestTemplate extends RestTemplate {
     private final HttpContext httpContext;
 
-    StatefullRestTemplate(HttpContext httpContext) {
+	public StatefullRestTemplate(HttpContext httpContext) {
         super();
         HttpClient httpClient = HttpClientBuilder.create().build();
         this.httpContext = httpContext == null ? new BasicHttpContext() : httpContext;

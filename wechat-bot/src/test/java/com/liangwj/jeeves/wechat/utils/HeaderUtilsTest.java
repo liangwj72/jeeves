@@ -5,8 +5,6 @@ import org.junit.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import com.liangwj.jeeves.wechat.utils.HeaderUtils;
-
 public class HeaderUtilsTest {
 
 

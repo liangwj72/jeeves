@@ -1,0 +1,92 @@
+[
+	{
+		"domain":"wx.qq.com",
+		"expiryDate":"2123-02-26T17:37:28.611+08:00",
+		"name":"MM_WX_NOTIFY_STATE",
+		"path":"/",
+		"persistent":true,
+		"secure":false,
+		"value":"1",
+		"version":0
+	},
+	{
+		"domain":"wx.qq.com",
+		"expiryDate":"2123-02-26T17:37:28.611+08:00",
+		"name":"MM_WX_SOUND_STATE",
+		"path":"/",
+		"persistent":true,
+		"secure":false,
+		"value":"1",
+		"version":0
+	},
+	{
+		"domain":"wx.qq.com",
+		"expiryDate":"2023-03-23 05:37:17",
+		"name":"mm_lang",
+		"path":"/",
+		"persistent":true,
+		"secure":true,
+		"value":"zh_CN",
+		"version":0
+	},
+	{
+		"domain":"wx.qq.com",
+		"expiryDate":"2033-03-19 17:37:16",
+		"name":"webwx_auth_ticket",
+		"path":"/",
+		"persistent":true,
+		"secure":true,
+		"value":"CIsBENrBxO4LGoABaL/Wcsd3K03SLExCETI4pBgnV9VJkknYcfHDW7zKFR6F+OBabHn6dss2xeGCGKk9rZ5YU1Jlwdohctr34TnyvKhKvW6g6QfPN0pKWEdOQYfuL5cOohfSUgnUTHK+nwDlo1JnMqmze4ZfAkbl9Q2A1qKAVI41YBkRdoa4wHALEbg=",
+		"version":0
+	},
+	{
+		"domain":"wx.qq.com",
+		"expiryDate":"2033-03-19 17:30:29",
+		"name":"webwxuvid",
+		"path":"/",
+		"persistent":true,
+		"secure":true,
+		"value":"1c52fbb10aad60aacfd031589fcc60b9ec37ddc77efb2b500b4e235335d297ee77e1b92db1759824b8b9197b950f699d",
+		"version":0
+	},
+	{
+		"domain":"wx.qq.com",
+		"expiryDate":"2023-03-23 05:37:19",
+		"name":"wxloadtime",
+		"path":"/",
+		"persistent":true,
+		"secure":true,
+		"value":"1679477836_expired",
+		"version":0
+	},
+	{
+		"domain":"wx.qq.com",
+		"expiryDate":"2023-03-23 05:37:22",
+		"name":"wxpluginkey",
+		"path":"/",
+		"persistent":true,
+		"secure":true,
+		"value":"1679470200",
+		"version":0
+	},
+	{
+		"domain":"qq.com",
+		"expiryDate":"2023-03-23 05:37:16",
+		"name":"wxuin",
+		"path":"/",
+		"persistent":true,
+		"secure":true,
+		"value":"1480254194",
+		"version":0
+	},
+	{
+		"domain":"wx.qq.com",
+		"expiryDate":"2023-03-25 17:37:22",
+		"name":"wxuin",
+		"path":"/",
+		"persistent":true,
+		"secure":true,
+		"value":"1480254194",
+		"version":0
+	}
+]

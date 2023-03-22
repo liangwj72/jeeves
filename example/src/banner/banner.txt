@@ -1,0 +1,8 @@
+${AnsiColor.BRIGHT_RED}
+                                                             
+微信机器人
+
+${AnsiColor.DEFAULT}
+Build: ${AnsiColor.RED}UTC 时间 ${timestamp} ${AnsiColor.DEFAULT}
+版本: ${project.version}
+开发团队: 消息树

@@ -6,6 +6,7 @@ package com.liangwj.jeeves.wechat.enums;
  */
 public enum BotStatus {
 
+	Disconnect("未连接"),
 	Connecting("连接中"),
 	AwaitQrCode("等待扫描二维码"),
 	Success("登录成功");

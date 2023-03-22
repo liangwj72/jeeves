@@ -2,8 +2,6 @@ package com.liangwj.jeeves.wechat.domain.shared;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.liangwj.jeeves.wechat.domain.shared.FriendInvitationContent;
-
 import org.apache.commons.text.StringEscapeUtils;
 import org.junit.Assert;
 import org.junit.Test;

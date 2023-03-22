@@ -8,18 +8,18 @@ server:
       protocol-header: x-forwarded-proto
     
   # 监听端口
-  port: 22000
+  port: 8080
 
 # ===============================
 # spring配置
 # ===============================
 spring:
   freemarker:
-    # 模板后缀，默认是ftlh
-    suffix: .ftlh
+    # 模板后缀
+    suffix: .html
     # 特殊配置: 防止freemark空指针
     settings: 
-      classic_compatible: true
+      "[classic_compatible]": true
 
   # 特殊配置: 防止没有定义接口的aop类出错
   aop.proxy-target-class: true
@@ -49,6 +49,7 @@ logging:
     #"[com.liangwj.jeeves]": ${APP_LOG_LEVEL:debug}
     # 本项目的代码默认是debug
     "[com.liangwj.jeeves]": ${APP_LOG_LEVEL:debug}
+    "[com.liangwj.tools2k.utils.net.FileCookieStore]": ${APP_LOG_LEVEL:debug}
     
   # 在console中显示时，我们为字体加了颜色，方便查看，但输出到文件时，加颜色就没有必要了
   pattern: 
@@ -57,7 +58,6 @@ logging:
   #file.name: target/logs.txt
      
 wechat:
-  ua: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"
   url:
     entry:      "https://wx.qq.com/"
     login_base: "https://login.weixin.qq.com"

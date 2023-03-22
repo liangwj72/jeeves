@@ -31,6 +31,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.liangwj.jeeves.wechat.BotConstants;
 import com.liangwj.jeeves.wechat.domain.request.AddChatRoomMemberRequest;
 import com.liangwj.jeeves.wechat.domain.request.BatchGetContactRequest;
 import com.liangwj.jeeves.wechat.domain.request.CreateChatRoomRequest;
@@ -73,8 +74,9 @@ import com.liangwj.jeeves.wechat.utils.DeviceIdGenerator;
 import com.liangwj.jeeves.wechat.utils.HeaderUtils;
 import com.liangwj.jeeves.wechat.utils.RandomUtils;
 import com.liangwj.jeeves.wechat.utils.WechatUtils;
-import com.liangwj.jeeves.wechat.utils.rest.HttpRestConfig;
-import com.liangwj.jeeves.wechat.utils.rest.StatefullRestTemplate;
+import com.liangwj.tools2k.utils.other.DateUtil;
+
+import springframework.StatefullRestTemplate;
 
 @Component
 class WechatHttpServiceInternal {
@@ -138,13 +140,12 @@ class WechatHttpServiceInternal {
 	private String refererValue = null;
 
 	@Autowired
-	private UrlServices urlServices;
-	
+	private ConfigServices urlServices;
+
 	@Autowired
-	WechatHttpServiceInternal(RestTemplate restTemplate, @Value("${wechat.ua}") String BROWSER_DEFAULT_USER_AGENT) {
+	WechatHttpServiceInternal(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 		this.postHeader = new HttpHeaders();
-		postHeader.set(HttpHeaders.USER_AGENT, BROWSER_DEFAULT_USER_AGENT);
 		postHeader.set(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
 		postHeader.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.ALL));
 
@@ -176,7 +177,7 @@ class WechatHttpServiceInternal {
 		// be stored in browsers by javascript.
 		CookieStore store = (CookieStore) ((StatefullRestTemplate) restTemplate).getHttpContext()
 				.getAttribute(HttpClientContext.COOKIE_STORE);
-		Date maxDate = new Date(Long.MAX_VALUE);
+		Date maxDate = DateUtil.get100YearDay();
 		String domain = "wx.qq.com";// WECHAT_URL_ENTRY.replaceAll("https://",
 									// "").replaceAll("/", "");
 		Map<String, String> cookies = new HashMap<>(3);
@@ -195,8 +196,8 @@ class WechatHttpServiceInternal {
 	 * Get UUID for this session
 	 *
 	 * @return UUID
-	 * @throws URISyntaxException 
-	 * @throws MalformedURLException 
+	 * @throws URISyntaxException
+	 * @throws MalformedURLException
 	 */
 	String getUUID() throws URISyntaxException, MalformedURLException {
 		final String regEx = "window.QRLogin.code = (\\d+); window.QRLogin.uuid = \"(\\S+?)\";";
@@ -210,7 +211,9 @@ class WechatHttpServiceInternal {
 		ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(customHeader),
 				String.class);
 		String body = responseEntity.getBody();
-		log.debug("请求UUID结果: {}", body); // 请求UUID结果: window.QRLogin.code = 200; window.QRLogin.uuid = "AaQzMucO3A==";
+		log.debug("请求UUID结果: {}", body); // 请求UUID结果: window.QRLogin.code = 200;
+											// window.QRLogin.uuid =
+											// "AaQzMucO3A==";
 
 		Matcher matcher = Pattern.compile(regEx).matcher(body);
 		if (matcher.find()) {
@@ -218,7 +221,7 @@ class WechatHttpServiceInternal {
 				return matcher.group(2);
 			}
 		}
-				
+
 		throw new WechatException("請求UUID時，無法獲取 uuid。原始文本:" + body);
 	}
 
@@ -291,17 +294,16 @@ class WechatHttpServiceInternal {
 		customHeader.set(HttpHeaders.ACCEPT,
 				"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 		customHeader.set("Upgrade-Insecure-Requests", "1");
-		customHeader.set("client-version", HttpRestConfig.UOS_PATCH_CLIENT_VERSION);
-		customHeader.set("extspam", HttpRestConfig.UOS_PATCH_EXTSPAM);
-		customHeader.set(HttpHeaders.REFERER, "https://wx.qq.com/?target=t");
+		customHeader.set("client-version", BotConstants.UOS_PATCH_CLIENT_VERSION);
+		customHeader.set("extspam", BotConstants.UOS_PATCH_EXTSPAM);
 
 		HeaderUtils.assign(customHeader, getHeader);
 		ResponseEntity<String> responseEntity = restTemplate.exchange(redirectUrl, HttpMethod.GET, new HttpEntity<>(customHeader),
 				String.class);
 		String xmlString = responseEntity.getBody();
-		
+
 		log.debug("openNewloginpage 返回信息:{}", xmlString);
-		
+
 		ObjectMapper xmlMapper = new XmlMapper();
 		return xmlMapper.readValue(xmlString, Token.class);
 	}

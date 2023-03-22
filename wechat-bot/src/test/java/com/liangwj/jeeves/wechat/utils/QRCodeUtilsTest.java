@@ -2,8 +2,6 @@ package com.liangwj.jeeves.wechat.utils;
 
 import org.junit.Test;
 
-import com.liangwj.jeeves.wechat.utils.QRCodeUtils;
-
 public class QRCodeUtilsTest {
 
     @Test

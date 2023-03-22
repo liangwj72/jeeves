@@ -1,31 +1,38 @@
 package com.liangwj.jeeves.example;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 import com.liangwj.jeeves.wechat.EnableJeevesWechatBot;
-import com.liangwj.jeeves.wechat.JeevesWechatBotServices;
+import com.liangwj.jeeves.wechat.service.LoginService;
+import com.liangwj.tools2k.apiServer.anno.EnableWebPorjectSet;
+import com.liangwj.tools2k.utils.other.SpringUtil;
 
 @SpringBootApplication
 @EnableJeevesWechatBot
+@EnableWebPorjectSet
 public class JeevesApplication {
 
-    private static final Logger logger = LoggerFactory.getLogger(JeevesApplication.class);
+	@Autowired
+	private LoginService loginService;
 
-    public static void main(String[] args) {
-        SpringApplication.run(JeevesApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringUtil.startServer(JeevesApplication.class);
+	}
 
-    @Bean
-    public CommandLineRunner run(JeevesWechatBotServices jeeves) throws Exception {
-        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            logger.error(e.getMessage(), e);
-            System.exit(1);
-        });
-        return args -> jeeves.start();
-    }
+	@PostConstruct
+	protected void start() {
+		// 延时启动机器人
+		new Timer().schedule(new TimerTask() {
+			@Override
+			public void run() {
+				// loginService.connect();
+			}
+		}, 1000L);
+	}
 }

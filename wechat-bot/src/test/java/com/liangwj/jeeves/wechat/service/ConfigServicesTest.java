@@ -5,8 +5,8 @@ import java.net.URISyntaxException;
 
 import org.junit.jupiter.api.Test;
 
-public class UrlServicesTest {
-	private UrlServices obj = new UrlServices();
+public class ConfigServicesTest {
+	private ConfigServices obj = new ConfigServices();
 	
 	@Test
 	public void test1() throws MalformedURLException, URISyntaxException {
