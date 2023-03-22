@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-<title>后端例子</title>
+<meta http-equiv="refresh" content="5">
+<title>微信机器人</title>
 <style>
 body {
 	padding: 10px;
@@ -38,7 +39,10 @@ code {
 </style>
 </head>
 <body>
-	<div class="system-name">后端例子-templates html2</div>
-	<div class="text-box">${status}</div>
+	<div class="system-name">微信机器人</div>
+	<div class="text-box">
+		${status}<br/>
+		<#if showQrCode><img src="/qrcode.jpg"></#if>
+	</div>
 </body>
 </html>

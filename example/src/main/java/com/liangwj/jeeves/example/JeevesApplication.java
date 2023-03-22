@@ -31,7 +31,7 @@ public class JeevesApplication {
 		new Timer().schedule(new TimerTask() {
 			@Override
 			public void run() {
-				// loginService.connect();
+				loginService.connect();
 			}
 		}, 1000L);
 	}

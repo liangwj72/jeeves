@@ -1,24 +1,45 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
+# Eclipse 项目文件
 .project
 .settings
+.classpath
+.externalToolBuilders
+.factorypath
 .springBeans
+.apt_generated
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# Idea 项目文件
+.idea/
+.iml/
 *.iml
 *.ipr
+*.iws
+*.idea
 
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+# 系统 log file
+hs_err_pid*
+
+# Maven Build 目录和 Spring boot的配置文件 
+target/
+
+# 其他杂七杂八
+*.sw?
+.#*
+*#
+*~
+*.sublime-*
+.svn/
+Thumbs.db
+~$*
+.DS_Store
+Desktop.ini
+
+# Gradle 项目文件
+build.gradle
+gradle.properties.sample
+mvn-push.gradle
+gradle.properties
+settings.gradle
+
+# 我们自己的框架的临时目录
+/work/
+/run.pid

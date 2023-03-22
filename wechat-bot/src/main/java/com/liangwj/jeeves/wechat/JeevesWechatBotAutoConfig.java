@@ -51,23 +51,28 @@ public class JeevesWechatBotAutoConfig {
 		httpContext.setAttribute(HttpClientContext.REQUEST_CONFIG, RequestConfig.custom().setRedirectsEnabled(false).build());// 不重定向
 		StatefullRestTemplate rest = new StatefullRestTemplate(httpContext);
 
-		rest.getInterceptors().add(new ClientHttpRequestInterceptor() {
-			@Override
-			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
-					throws IOException {
-
-				HttpHeaders headers = request.getHeaders();
-				headers.set(HttpHeaders.ACCEPT_LANGUAGE, BotConstants.HEADER_ACCEPT_LANGUAGE);
-				headers.set(HttpHeaders.ACCEPT_ENCODING, BotConstants.HEADER_ACCEPT_ENCODING);
-				headers.set(HttpHeaders.USER_AGENT, BotConstants.HEADER_USER_AGENT);
-				headers.set(HttpHeaders.REFERER, BotConstants.HEADER_UOS_REFERER);
-
-				log.debug("请求:{} {}", request.getMethod(), request.getURI());
-
-				return execution.execute(request, body);
-			}
-		});
+		rest.getInterceptors().add(new MyClientHttpRequestInterceptor());
 
 		return rest;
+	}
+
+	class MyClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
+
+		private final org.slf4j.Logger log = org.slf4j.LoggerFactory
+				.getLogger(JeevesWechatBotAutoConfig.MyClientHttpRequestInterceptor.class);
+
+		@Override
+		public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+				throws IOException {
+			HttpHeaders headers = request.getHeaders();
+			headers.set(HttpHeaders.ACCEPT_LANGUAGE, BotConstants.HEADER_ACCEPT_LANGUAGE);
+			headers.set(HttpHeaders.ACCEPT_ENCODING, BotConstants.HEADER_ACCEPT_ENCODING);
+			headers.set(HttpHeaders.USER_AGENT, BotConstants.HEADER_USER_AGENT);
+			headers.set(HttpHeaders.REFERER, BotConstants.HEADER_UOS_REFERER);
+
+			this.log.debug("请求:{} {}", request.getMethod(), request.getURI());
+
+			return execution.execute(request, body);
+		}
 	}
 }

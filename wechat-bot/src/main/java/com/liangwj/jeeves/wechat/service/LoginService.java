@@ -148,7 +148,7 @@ public class LoginService {
 			InitResponse initResponse = this.afterLogin(loginResponse);
 
 			// 9 get contact
-			this.getContact();
+			this.getPhonebook();
 
 			// 10 batch get contact
 			this.batchGetContact(initResponse);
@@ -199,7 +199,7 @@ public class LoginService {
 		WechatUtils.checkBaseResponse(initResponse);
 		cacheService.setSyncKey(initResponse.getSyncKey());
 		cacheService.setOwner(initResponse.getUser());
-		log.info("[7] init completed");
+		log.info("[7] 初始化完成，当前用户信息: {}", JSON.toJSONString(cacheService.getOwner(), true));
 
 		// 8 status notify
 		StatusNotifyResponse statusNotifyResponse = wechatHttpServiceInternal.statusNotify(cacheService.getHostUrl(),
@@ -228,9 +228,8 @@ public class LoginService {
 			WechatUtils.checkBaseResponse(batchGetContactResponse);
 			cacheService.getChatRooms().addAll(batchGetContactResponse.getContactList());
 		}
-		log.debug("批量获取联系人: {} ", JSON.toJSONString(cacheService.getChatRooms(), true));
+		log.debug("获取群信息: {} ", JSON.toJSONString(cacheService.getChatRooms(), true));
 		log.info("[10] batch get contact completed");
-
 	}
 
 	/**
@@ -238,7 +237,7 @@ public class LoginService {
 	 * 
 	 * @throws IOException
 	 */
-	private void getContact() throws IOException {
+	private void getPhonebook() throws IOException {
 		// 9 get contact
 		long seq = 0;
 		do {
@@ -254,8 +253,9 @@ public class LoginService {
 					.filter(WechatUtils::isMediaPlatform).collect(Collectors.toSet()));
 		} while (seq > 0);
 
-		log.debug("获取联系人 getIndividuals : {} ", JSON.toJSONString(cacheService.getIndividuals(), true));
-		log.debug("获取联系人 getMediaPlatforms: {} ", JSON.toJSONString(cacheService.getMediaPlatforms(), true));
+		log.debug("获取通讯录 getIndividuals : {} ", JSON.toJSONString(cacheService.getIndividuals(), true));
+		// log.debug("获取公众号 getMediaPlatforms: {} ",
+		// JSON.toJSONString(cacheService.getMediaPlatforms(), true));
 
 		log.info("[9] get contact completed");
 	}

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.liangwj.jeeves.wechat.enums.BotStatus;
 import com.liangwj.jeeves.wechat.service.LoginService;
 
 @Controller
@@ -20,7 +21,8 @@ public class IndexController {
 			"/"
 	})
 	public String index(Model model) {
-		model.addAttribute("status", this.loginService.getBotStatus().name());
+		model.addAttribute("status", this.loginService.getBotStatus().getMsg());
+		model.addAttribute("showQrCode", this.loginService.getBotStatus() == BotStatus.AwaitQrCode);
 		return "index";
 	}
 
