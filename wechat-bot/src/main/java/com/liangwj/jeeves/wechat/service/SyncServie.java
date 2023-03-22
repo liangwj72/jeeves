@@ -1,5 +1,12 @@
 package com.liangwj.jeeves.wechat.service;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,20 +16,16 @@ import org.springframework.stereotype.Component;
 import com.liangwj.jeeves.wechat.domain.response.SyncCheckResponse;
 import com.liangwj.jeeves.wechat.domain.response.SyncResponse;
 import com.liangwj.jeeves.wechat.domain.response.VerifyUserResponse;
-import com.liangwj.jeeves.wechat.domain.shared.*;
+import com.liangwj.jeeves.wechat.domain.shared.ChatRoomMember;
+import com.liangwj.jeeves.wechat.domain.shared.Contact;
+import com.liangwj.jeeves.wechat.domain.shared.Message;
+import com.liangwj.jeeves.wechat.domain.shared.RecommendInfo;
+import com.liangwj.jeeves.wechat.domain.shared.VerifyUser;
 import com.liangwj.jeeves.wechat.enums.MessageType;
 import com.liangwj.jeeves.wechat.enums.RetCode;
 import com.liangwj.jeeves.wechat.enums.Selector;
 import com.liangwj.jeeves.wechat.exception.WechatException;
 import com.liangwj.jeeves.wechat.utils.WechatUtils;
-
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class SyncServie {
@@ -31,20 +34,13 @@ public class SyncServie {
     private CacheService cacheService;
     @Autowired
     private WechatHttpServiceInternal wechatHttpService;
-    @Autowired(required = false)
+	@Autowired
     private MessageHandler messageHandler;
 
     @Value("${wechat.url.get_msg_img}")
     private String WECHAT_URL_GET_MSG_IMG;
 
     private final static String RED_PACKET_CONTENT = "收到红包，请在手机上查看";
-
-    @PostConstruct
-    public void setMessageHandler() {
-        if (messageHandler == null) {
-            this.messageHandler = new DefaultMessageHandler();
-        }
-    }
 
     public void listen() throws IOException, URISyntaxException {
         SyncCheckResponse syncCheckResponse = wechatHttpService.syncCheck(

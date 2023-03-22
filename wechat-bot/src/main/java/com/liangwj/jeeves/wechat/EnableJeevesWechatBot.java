@@ -19,7 +19,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import(value = {
-		JeevesWechatBotServices.class
+		JeevesWechatBotAutoConfig.class
 })
 @EnableScheduling
 public @interface EnableJeevesWechatBot {
