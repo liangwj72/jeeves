@@ -1,9 +1,11 @@
 package com.liangwj.jeeves.wechat.domain.shared;
 
+import java.util.Set;
+
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Contact extends Member {
@@ -160,4 +162,21 @@ public class Contact extends Member {
     public int hashCode() {
         return this.getUserName().hashCode();
     }
+
+	/**
+	 * 根据用户ID查查改用户在群的信息
+	 * 
+	 * @param username
+	 * @return
+	 */
+	public ChatRoomMember getUserInfoByUsername(String username) {
+		if (this.MemberList != null && StringUtils.hasText(username)) {
+			for (ChatRoomMember member : MemberList) {
+				if (username.equals(member.getUserName())) {
+					return member;
+				}
+			}
+		}
+		return null;
+	}
 }

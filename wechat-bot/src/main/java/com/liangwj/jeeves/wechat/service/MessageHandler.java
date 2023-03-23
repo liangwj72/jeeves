@@ -31,7 +31,7 @@ public interface MessageHandler {
 	 * @param message
 	 *            消息体
 	 */
-	void onReceivingChatRoomTextMessage(Message message);
+	void onReceivingChatRoomTextMessage(Message message, Contact room, ChatRoomMember sender, String content);
 
 	/**
 	 * 事件：收到群聊天图片消息

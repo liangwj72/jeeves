@@ -20,14 +20,14 @@ code {
 .text-box {
 	padding: 20px;
 	margin: 20px 0;
+}
+
+.text-box .status {
 	border: 1px solid #eee;
 	border-left-width: 5px;
 	border-radius: 3px;
 	border-left-color: #1b809e;
-}
-
-.text-box li {
-	padding: 5px 10px;
+	padding: 10px;
 }
 
 .system-name {
@@ -41,8 +41,21 @@ code {
 <body>
 	<div class="system-name">微信机器人</div>
 	<div class="text-box">
-		${status}<br/>
-		<#if showQrCode><img src="/qrcode.jpg"></#if>
+		<div class="status">
+			<#if logined >
+				<div>当前账号: ${owner.nickName}</div>
+				<#list chatrooms as room>
+					<div>群聊: ${room.nickName} - ${room.memberCount} 人 </div>
+				</#list>
+			<#else>
+		  		${status}
+		  	</#if>
+		</div>
+		<#if showQrCode>
+		<div>
+			<img src="/qrcode.jpg" >
+		</div>
+		</#if>
 	</div>
 </body>
 </html>

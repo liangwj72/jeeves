@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -19,50 +20,78 @@ import com.liangwj.jeeves.wechat.domain.shared.FriendInvitationContent;
 import com.liangwj.jeeves.wechat.domain.shared.Message;
 import com.liangwj.jeeves.wechat.domain.shared.RecommendInfo;
 import com.liangwj.jeeves.wechat.enums.BotStatus;
+import com.liangwj.jeeves.wechat.service.CacheService;
 import com.liangwj.jeeves.wechat.service.MessageHandler;
 import com.liangwj.jeeves.wechat.service.WechatHttpService;
 import com.liangwj.jeeves.wechat.utils.MessageUtils;
+import com.liangwj.tools2k.utils.other.LogUtil;
 
 @Component
 public class MessageHandlerImpl implements MessageHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(MessageHandlerImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(MessageHandlerImpl.class);
 	@Autowired
 	private WechatHttpService wechatHttpService;
 
-	private byte[] qrCodeBytes;
+	@Autowired
+	private CacheService cacheService;
+
+	private final int questMinLen = 5;
 
 	@Override
-	public void onReceivingChatRoomTextMessage(Message message) {
-		logger.info("onReceivingChatRoomTextMessage");
-		logger.info("from chatroom: " + message.getFromUserName());
-		logger.info("from person: " + MessageUtils.getSenderOfChatRoomTextMessage(message.getContent()));
-		logger.info("to: " + message.getToUserName());
-		logger.info("content:" + MessageUtils.getChatRoomTextMessageContent(message.getContent()));
+	public void onReceivingChatRoomTextMessage(Message message, Contact room, ChatRoomMember sender, String content) {
+		String owner = "@" + this.cacheService.getOwner().getNickName();
+		if (content.startsWith(owner)) {
+			// 被人@了
+
+			String txt = MessageUtils.removeEm(content.substring(owner.length()).trim());
+			// 如果有文字
+			String reply = String.format("@%s 宝宝 [嘴唇]", sender.getNickName());
+
+			if (StringUtils.hasText(txt)) {
+
+				if (txt.length() >= this.questMinLen) {
+					reply = String.format("@%s 收到", sender.getNickName(), txt);
+				} else {
+					reply = String.format("@%s 你的提问太短了,请至少超过%d个字", sender.getNickName(), this.questMinLen);
+				}
+
+				// 回复
+			}
+			this.sendText(message.getFromUserName(), reply);
+		}
+	}
+
+	private void sendText(String username, String text) {
+		try {
+			this.wechatHttpService.sendText(username, text);
+		} catch (IOException e) {
+			LogUtil.traceError(log, e, "发送消息失败");
+		}
 	}
 
 	@Override
 	public void onReceivingChatRoomImageMessage(Message message, String thumbImageUrl, String fullImageUrl) {
-		logger.info("onReceivingChatRoomImageMessage");
-		logger.info("thumbImageUrl:" + thumbImageUrl);
-		logger.info("fullImageUrl:" + fullImageUrl);
+		log.debug("onReceivingChatRoomImageMessage");
+		log.debug("thumbImageUrl:" + thumbImageUrl);
+		log.debug("fullImageUrl:" + fullImageUrl);
 	}
 
 	@Override
 	public void onReceivingPrivateTextMessage(Message message) throws IOException {
-		logger.info("onReceivingPrivateTextMessage");
-		logger.info("from: " + message.getFromUserName());
-		logger.info("to: " + message.getToUserName());
-		logger.info("content:" + message.getContent());
+		log.debug("onReceivingPrivateTextMessage");
+		log.debug("from: " + message.getFromUserName());
+		log.debug("to: " + message.getToUserName());
+		log.debug("content:" + message.getContent());
 		// 将原文回复给对方
 		replyMessage(message);
 	}
 
 	@Override
 	public void onReceivingPrivateImageMessage(Message message, String thumbImageUrl, String fullImageUrl) throws IOException {
-		logger.info("onReceivingPrivateImageMessage");
-		logger.info("thumbImageUrl:" + thumbImageUrl);
-		logger.info("fullImageUrl:" + fullImageUrl);
+		log.debug("onReceivingPrivateImageMessage");
+		log.debug("thumbImageUrl:" + thumbImageUrl);
+		log.debug("fullImageUrl:" + fullImageUrl);
 		// 将图片保存在本地
 		byte[] data = wechatHttpService.downloadImage(thumbImageUrl);
 		FileOutputStream fos = new FileOutputStream("thumb.jpg");
@@ -72,15 +101,15 @@ public class MessageHandlerImpl implements MessageHandler {
 
 	@Override
 	public boolean onReceivingFriendInvitation(RecommendInfo info) {
-		logger.info("onReceivingFriendInvitation");
-		logger.info("recommendinfo content:" + info.getContent());
+		log.debug("onReceivingFriendInvitation");
+		log.debug("recommendinfo content:" + info.getContent());
 		// 默认接收所有的邀请
 		return true;
 	}
 
 	@Override
 	public void postAcceptFriendInvitation(Message message) throws IOException {
-		logger.info("postAcceptFriendInvitation");
+		log.debug("postAcceptFriendInvitation");
 		// 将该用户的微信号设置成他的昵称
 		String content = StringEscapeUtils.unescapeXml(message.getContent());
 		ObjectMapper xmlMapper = new XmlMapper();
@@ -90,63 +119,63 @@ public class MessageHandlerImpl implements MessageHandler {
 
 	@Override
 	public void onChatRoomMembersChanged(Contact chatRoom, Set<ChatRoomMember> membersJoined, Set<ChatRoomMember> membersLeft) {
-		logger.info("onChatRoomMembersChanged");
-		logger.info("chatRoom:" + chatRoom.getUserName());
+		log.debug("onChatRoomMembersChanged");
+		log.debug("chatRoom:" + chatRoom.getUserName());
 		if (membersJoined != null && membersJoined.size() > 0) {
-			logger.info("membersJoined:"
+			log.debug("membersJoined:"
 					+ String.join(",", membersJoined.stream().map(ChatRoomMember::getNickName).collect(Collectors.toList())));
 		}
 		if (membersLeft != null && membersLeft.size() > 0) {
-			logger.info("membersLeft:"
+			log.debug("membersLeft:"
 					+ String.join(",", membersLeft.stream().map(ChatRoomMember::getNickName).collect(Collectors.toList())));
 		}
 	}
 
 	@Override
 	public void onNewChatRoomsFound(Set<Contact> chatRooms) {
-		logger.info("onNewChatRoomsFound");
-		chatRooms.forEach(x -> logger.info(x.getUserName()));
+		log.debug("onNewChatRoomsFound");
+		chatRooms.forEach(x -> log.debug(x.getUserName()));
 	}
 
 	@Override
 	public void onChatRoomsDeleted(Set<Contact> chatRooms) {
-		logger.info("onChatRoomsDeleted");
-		chatRooms.forEach(x -> logger.info(x.getUserName()));
+		log.debug("onChatRoomsDeleted");
+		chatRooms.forEach(x -> log.debug(x.getUserName()));
 	}
 
 	@Override
 	public void onNewFriendsFound(Set<Contact> contacts) {
-		logger.info("onNewFriendsFound");
+		log.debug("onNewFriendsFound");
 		contacts.forEach(x -> {
-			logger.info(x.getUserName());
-			logger.info(x.getNickName());
+			log.debug(x.getUserName());
+			log.debug(x.getNickName());
 		});
 	}
 
 	@Override
 	public void onFriendsDeleted(Set<Contact> contacts) {
-		logger.info("onFriendsDeleted");
+		log.debug("onFriendsDeleted");
 		contacts.forEach(x -> {
-			logger.info(x.getUserName());
-			logger.info(x.getNickName());
+			log.debug(x.getUserName());
+			log.debug(x.getNickName());
 		});
 	}
 
 	@Override
 	public void onNewMediaPlatformsFound(Set<Contact> mps) {
-		logger.info("onNewMediaPlatformsFound");
+		log.debug("onNewMediaPlatformsFound");
 	}
 
 	@Override
 	public void onMediaPlatformsDeleted(Set<Contact> mps) {
-		logger.info("onMediaPlatformsDeleted");
+		log.debug("onMediaPlatformsDeleted");
 	}
 
 	@Override
 	public void onRedPacketReceived(Contact contact) {
-		logger.info("onRedPacketReceived");
+		log.debug("onRedPacketReceived");
 		if (contact != null) {
-			logger.info("the red packet is from " + contact.getNickName());
+			log.debug("the red packet is from " + contact.getNickName());
 		}
 	}
 
@@ -157,27 +186,13 @@ public class MessageHandlerImpl implements MessageHandler {
 	@Override
 	public void onQrCode(byte[] bytes) {
 		// 将二维码保存在内存
-		this.qrCodeBytes = bytes;
 
 		// DebugUtils.saveQrCodeToFile(bytes);
 	}
 
 	@Override
 	public void onBotStatusChange(BotStatus status) {
-		logger.info("机器人状态改变为:{}", status.getMsg());
-	}
-
-	/**
-	 * 是否收到了二维码
-	 * 
-	 * @return
-	 */
-	public boolean isHasQrCode() {
-		return this.qrCodeBytes != null;
-	}
-
-	public byte[] getQrCodeBytes() {
-		return qrCodeBytes;
+		log.debug("机器人状态改变为:{}", status.getMsg());
 	}
 
 }

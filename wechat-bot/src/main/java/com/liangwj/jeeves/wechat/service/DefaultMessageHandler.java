@@ -18,7 +18,7 @@ public class DefaultMessageHandler implements MessageHandler {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultMessageHandler.class);
 
 	@Override
-	public void onReceivingChatRoomTextMessage(Message message) {
+	public void onReceivingChatRoomTextMessage(Message message, Contact room, ChatRoomMember sender, String content) {
 		logger.info("onReceivingChatRoomTextMessage");
 	}
 

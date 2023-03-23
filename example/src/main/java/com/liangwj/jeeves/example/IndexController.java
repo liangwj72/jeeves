@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.liangwj.jeeves.wechat.enums.BotStatus;
+import com.liangwj.jeeves.wechat.service.CacheService;
 import com.liangwj.jeeves.wechat.service.LoginService;
 
 @Controller
@@ -17,12 +18,29 @@ public class IndexController {
 	@Autowired
 	private LoginService loginService;
 
+	@Autowired
+	private CacheService cacheService;
+
 	@GetMapping(value = {
 			"/"
 	})
 	public String index(Model model) {
+		boolean showQrCode = false;
+		boolean logined = false;
+
 		model.addAttribute("status", this.loginService.getBotStatus().getMsg());
-		model.addAttribute("showQrCode", this.loginService.getBotStatus() == BotStatus.AwaitQrCode);
+		if (this.loginService.getBotStatus() == BotStatus.AwaitQrCode) {
+			// 如果等待扫描二维码
+			showQrCode = true;
+		} else if (this.loginService.getBotStatus() == BotStatus.Success) {
+			// 如果已经登录成功
+			logined = true;
+			model.addAttribute("owner", this.cacheService.getOwner()); // 用户信息
+			model.addAttribute("chatrooms", this.cacheService.getChatRooms()); // 所有聊天室
+		}
+		model.addAttribute("showQrCode", showQrCode);
+		model.addAttribute("logined", logined);
+
 		return "index";
 	}
 

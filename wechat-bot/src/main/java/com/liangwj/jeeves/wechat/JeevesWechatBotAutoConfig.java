@@ -58,9 +58,6 @@ public class JeevesWechatBotAutoConfig {
 
 	class MyClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
-		private final org.slf4j.Logger log = org.slf4j.LoggerFactory
-				.getLogger(JeevesWechatBotAutoConfig.MyClientHttpRequestInterceptor.class);
-
 		@Override
 		public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 				throws IOException {
@@ -70,7 +67,7 @@ public class JeevesWechatBotAutoConfig {
 			headers.set(HttpHeaders.USER_AGENT, BotConstants.HEADER_USER_AGENT);
 			headers.set(HttpHeaders.REFERER, BotConstants.HEADER_UOS_REFERER);
 
-			this.log.debug("请求:{} {}", request.getMethod(), request.getURI());
+			log.debug("请求:{} {}", request.getMethod(), request.getURI());
 
 			return execution.execute(request, body);
 		}
