@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.liangwj.jeeves.wechat.domain.response.SyncCheckResponse;
 import com.liangwj.jeeves.wechat.domain.response.SyncResponse;
 import com.liangwj.jeeves.wechat.domain.response.VerifyUserResponse;
@@ -134,8 +135,9 @@ public class SyncServie {
 			log.warn(" 但找不到发送人 {} 的信息", sendUserName);
 		}
 		if (room != null && sender != null && StringUtils.hasText(content)) {
-			log.debug("收到群聊消息 \n\t群聊: {} ({}) \n\t来自: {} ({}) \n\t内容: {}",
-					room.getNickName(), room.getUserName(), sender.getNickName(), sender.getUserName(), content);
+			log.debug("收到群聊消息 \n\t群聊: {} ({}) \n\t来自: {} ({}) \n\t内容: {}\n原始信息:\n{}",
+					room.getNickName(), room.getUserName(), sender.getNickName(), sender.getUserName(), content,
+					JSON.toJSONString(message, true));
 
 			messageHandler.onReceivingChatRoomTextMessage(message, room, sender, content);
 		}

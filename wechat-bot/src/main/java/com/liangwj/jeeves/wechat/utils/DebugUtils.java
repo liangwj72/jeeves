@@ -23,9 +23,6 @@ public class DebugUtils {
 
 	/**
 	 * 获取系统平台
-	 * 
-	 * @author https://github.com/yaphone
-	 * @date 2017年4月8日 下午10:27:53
 	 */
 	public static OsNameEnum getOsNameEnum() {
 		String os = System.getProperty("os.name").toUpperCase();
