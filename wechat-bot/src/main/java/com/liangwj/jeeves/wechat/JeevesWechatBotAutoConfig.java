@@ -31,7 +31,7 @@ public class JeevesWechatBotAutoConfig {
 	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(JeevesWechatBotAutoConfig.class);
 
 	public JeevesWechatBotAutoConfig() throws IOException {
-		System.setProperty("jsse.enableSNIExtension", "false");
+		// System.setProperty("jsse.enableSNIExtension", "false");
 	}
 
 	@Bean

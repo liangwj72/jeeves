@@ -54,6 +54,8 @@ public class LoginService {
 	private boolean quit = false;
 	private BotStatus botStatus = BotStatus.Disconnect;
 
+	private Thread run;
+
 	public BotStatus getBotStatus() {
 		return botStatus;
 	}
@@ -110,6 +112,18 @@ public class LoginService {
 	}
 
 	public void connect() {
+		if (this.run == null) {
+			this.run = new Thread(() -> {
+				this.startConnect();
+			}, "微信机器人");
+
+			this.run.start();
+		} else {
+
+		}
+	}
+
+	private void startConnect() {
 		log.debug("开始连接微信");
 		if (this.quit) {
 			return;
@@ -158,14 +172,20 @@ public class LoginService {
 
 			log.info("[*] 开始监听");
 			while (!this.quit) {
-				syncServie.listen();
+				try {
+					syncServie.listen();
+				} catch (WechatException e) {
+					if (this.quit) {
+						return;
+					}
+				}
 			}
 
 		} catch (IOException | URISyntaxException ex) {
 			throw new WechatException(ex);
 		} catch (WechatQRExpiredException ex) {
 			if (AUTO_RELOGIN_WHEN_QRCODE_EXPIRED && qrRefreshTimes <= MAX_QR_REFRESH_TIMES) {
-				connect();
+				this.startConnect();
 			} else {
 				throw new WechatException(ex);
 			}
