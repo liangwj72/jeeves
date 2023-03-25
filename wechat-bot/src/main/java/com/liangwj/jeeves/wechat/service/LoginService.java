@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.stream.Collectors;
 
+import javax.annotation.PreDestroy;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -67,8 +68,15 @@ public class LoginService {
 		this.botStatus = status;
 	}
 
+	@PreDestroy
 	protected void onShutdown() {
 		this.quit = true;
+		if (this.run != null) {
+			try {
+				this.run.join();
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 
 	/**
@@ -176,10 +184,11 @@ public class LoginService {
 					syncServie.listen();
 				} catch (WechatException e) {
 					if (this.quit) {
-						return;
+						break;
 					}
 				}
 			}
+			log.info("退出监听线程");
 
 		} catch (IOException | URISyntaxException ex) {
 			throw new WechatException(ex);
