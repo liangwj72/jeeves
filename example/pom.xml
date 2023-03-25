@@ -23,7 +23,7 @@
 		<dependency>
 			<groupId>com.liangwj</groupId>
 			<artifactId>jeeves-wechat-bot</artifactId>
-			<version>0.2.0</version>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 		<!-- /自己的工具包 -->
 
