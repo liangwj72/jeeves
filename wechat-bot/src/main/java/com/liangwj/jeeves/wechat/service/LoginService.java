@@ -137,68 +137,74 @@ public class LoginService {
 			return;
 		}
 
-		// 状态：连接中
-		this.onBotStatusChange(BotStatus.Connecting);
+		while (!quit) {
+			// 状态：连接中
+			this.onBotStatusChange(BotStatus.Connecting);
 
-		try {
-			// 0 entry
-			wechatHttpServiceInternal.open(qrRefreshTimes);
-			log.info("[0] entry completed");
+			try {
+				// 0 entry
+				wechatHttpServiceInternal.open(qrRefreshTimes);
+				log.info("[0] entry completed");
 
-			// 1 uuid
-			String uuid = wechatHttpServiceInternal.getUUID();
-			cacheService.setUuid(uuid);
-			log.info("[1] 成功获取UUID: {}", uuid);
+				// 1 uuid
+				String uuid = wechatHttpServiceInternal.getUUID();
+				cacheService.setUuid(uuid);
+				log.info("[1] 成功获取UUID: {}", uuid);
 
-			// 2 qr
-			this.qrCodeBytes = wechatHttpServiceInternal.getQR(uuid);
-			this.messageHandler.onQrCode(this.qrCodeBytes); // 顺便通知一下消息处理器，二维码图片已经生成了
-			this.onBotStatusChange(BotStatus.AwaitQrCode); // 状态：等待扫描二维码
-			log.info("[2] 成功获取二维码");
+				// 2 qr
+				this.qrCodeBytes = wechatHttpServiceInternal.getQR(uuid);
+				this.messageHandler.onQrCode(this.qrCodeBytes); // 顺便通知一下消息处理器，二维码图片已经生成了
+				this.onBotStatusChange(BotStatus.AwaitQrCode); // 状态：等待扫描二维码
+				log.info("[2] 成功获取二维码");
 
-			// 3 statreport
-			wechatHttpServiceInternal.statReport();
-			log.info("[3] 完成statReport");
+				// 3 statreport
+				wechatHttpServiceInternal.statReport();
+				log.info("[3] 完成statReport");
 
-			// 4 login
-			LoginResult loginResponse = this.loginWithUuid(uuid);
-			if (this.quit) {
-				return;
-			}
+				// 4 login
+				LoginResult loginResponse = this.loginWithUuid(uuid);
+				if (this.quit) {
+					return;
+				}
 
-			// 处理重定向，并初始化各项api参数
-			InitResponse initResponse = this.afterLogin(loginResponse);
+				// 处理重定向，并初始化各项api参数
+				InitResponse initResponse = this.afterLogin(loginResponse);
 
-			// 9 get contact
-			this.getPhonebook();
+				// 9 get contact
+				this.getPhonebook();
 
-			// 10 batch get contact
-			this.batchGetContact(initResponse);
+				// 10 batch get contact
+				this.batchGetContact(initResponse);
 
-			cacheService.setAlive(true);
-			log.info("[*] login process completed");
+				cacheService.setAlive(true);
+				log.info("[*] login process completed");
 
-			log.info("[*] 开始监听");
-			while (!this.quit) {
-				try {
-					syncServie.listen();
-				} catch (WechatException e) {
-					if (this.quit) {
-						break;
+				log.info("[*] 开始监听");
+				while (!this.quit) {
+					try {
+						syncServie.listen();
+					} catch (WechatException e) {
+						log.debug("监听出错了 {}", e.getMessage());
+						if (this.quit) {
+							break;
+						}
 					}
 				}
-			}
-			log.info("退出监听线程");
 
-		} catch (IOException | URISyntaxException ex) {
-			throw new WechatException(ex);
-		} catch (WechatQRExpiredException ex) {
-			if (AUTO_RELOGIN_WHEN_QRCODE_EXPIRED && qrRefreshTimes <= MAX_QR_REFRESH_TIMES) {
-				this.startConnect();
-			} else {
-				throw new WechatException(ex);
+			} catch (IOException | URISyntaxException | WechatQRExpiredException ex) {
+				if (AUTO_RELOGIN_WHEN_QRCODE_EXPIRED && qrRefreshTimes <= MAX_QR_REFRESH_TIMES) {
+				} else {
+					throw new WechatException(ex);
+				}
+			}
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
 			}
 		}
+		log.info("退出监听线程");
+
 	}
 
 	private InitResponse afterLogin(LoginResult loginResponse) throws IOException {
