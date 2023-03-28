@@ -126,21 +126,22 @@ public class SyncServie {
 		String sendUserName = MessageUtils.getSenderOfChatRoomTextMessage(message.getContent());
 		String content = MessageUtils.getChatRoomTextMessageContent(message.getContent());
 
+		ChatRoomMember sender = null;
 		Contact room = this.cacheService.getChatRoomById(roomId);
 		if (room == null) {
 			log.warn(" 但找不到聊天室 {} 的信息", roomId);
-		}
-		ChatRoomMember sender = room.getUserInfoByUsername(sendUserName);
-		if (sender == null) {
-			log.warn(" 但找不到发送人 {} 的信息", sendUserName);
-		}
-		if (room != null && sender != null && StringUtils.hasText(content)) {
-			log.debug("收到群聊消息 \n\t群聊: {} ({}) \n\t来自: {} ({}) \n\t内容: {}\n原始信息:\n{}",
-					room.getNickName(), room.getUserName(), sender.getNickName(), sender.getUserName(), content,
-					JSON.toJSONString(message, true));
+		} else {
+			sender = room.getUserInfoByUsername(sendUserName);
+			if (sender == null) {
+				log.warn(" 但找不到发送人 {} 的信息", sendUserName);
+			} else if (StringUtils.hasText(content)) {
+				log.debug("收到群聊消息 \n\t群聊: {} ({}) \n\t来自: {} ({}) \n\t内容: {}\n原始信息:\n{}",
+						room.getNickName(), room.getUserName(), sender.getNickName(), sender.getUserName(), content,
+						JSON.toJSONString(message, true));
 
-			messageHandler.onReceivingChatRoomTextMessage(message, room, sender, content);
+			}
 		}
+		messageHandler.onReceivingChatRoomTextMessage(message, room, sender, content);
 	}
 
 	private void onNewMessage() throws IOException, URISyntaxException {
